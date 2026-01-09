@@ -2,12 +2,6 @@
 global ft_strlen
 
 section	.text
-;_start:
-;	mov rdi, string
-;	call _strlen
-;	mov rdi, rax
-;	mov rax, 60
-;	syscall
 ft_strlen:
 	xor eax, eax
 	mov cl , [rdi] 
@@ -22,6 +16,3 @@ ft_strlen:
 	.exit:
 	ret
 
-;section .data
-;string:
-;	db "badr", 0
