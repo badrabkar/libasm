@@ -8,7 +8,7 @@ ARFLAGS=rcs
 #r: tells the ar command to insert or replace the object file with new ones
 #c: tells the ar command to create the library if it doesn't exist
 #s: tells the ar command to 
-SRCS=ft_strlen.s ft_strcmp.s ft_strcpy.s
+SRCS=ft_strlen.s ft_strcpy.s
 OBJS=$(SRCS:.s=.o)
 
 
@@ -18,20 +18,20 @@ NAME=mainc
 all: $(NAME)
 
 
-$(NAME) : $(LIB)
+$(NAME) : $(LIB) main.c
 	$(CC) main.c $(LIB) -o $@
 
-
 $(LIB): $(OBJS)
-	$(AR) $^ $@
+	$(AR) $(ARFLAGS) $@ $^
 
-%.o:%.s
+%.o: %.s
 	$(AS) $(ASFLAGS) $^ -o $@
 
 clean:
 	rm -f $(OBJS)
+
 fclean: clean
-	rm -r $(NAME) $(LIB)
+	rm -f $(NAME) $(LIB)
 
 re: fclean all
 
