@@ -1,17 +1,20 @@
 
         global	ft_write
-        extern  __errno_location 
 
         section	.text
+        extern __errno_location
 
 ft_write:
-        mov     rax, 1
+        mov eax, 1
         syscall
-        cmp rax, -1
-        jz .done
+        mov rcx, rax
+        neg rcx
+        cmp rax, 0
+        jl .done
         ret
 .done:
-
-        call __errno_location
+        call __errno_location WRT ..plt
+        mov [rax], rcx
+        mov rax, -1
         ret
 
