@@ -9,6 +9,9 @@ ASFLAGS=-f elf64
 AR=ar
 ARFLAGS=rs
 
+SRCS:=$(wildcard $(SRCDIR)/*.s)
+OBJECTS:=$(patsubst $(SRCDIR)/%.s,$(OBJDIR)/%.o,$(SRCS))
+
 LIBRARY=libasm.a
 BINARY=mainc
 
