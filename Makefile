@@ -19,8 +19,11 @@ all: $(BINARY)
 
 lib: $(LIBRARY)
 
+test: all
+	$(MAKE) -C libasmTester/ $(filter-out test,$(MAKECMDGOALS))
+
 $(BINARY) : $(LIBRARY) main.c
-	$(CC) main.c  -L. -lasm -o $@
+	$(CC) main.c -L. -lasm -o $@
 
 $(LIBRARY): $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $^
@@ -38,7 +41,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
-
-
 
 
