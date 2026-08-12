@@ -3,43 +3,48 @@ OBJDIR=objs
 SRCDIR=srcs
 
 CC=gcc
-CFLAGS= -Wall -Wextra -Werror -g  
+CFLAGS= -g  
 AS=nasm
 ASFLAGS=-f elf64
 AR=ar
-ARFLAGS=rs
+ARFLAGS=rcs
 
-SRCS:=$(wildcard $(SRCDIR)/*.s)
-OBJECTS:=$(patsubst $(SRCDIR)/%.s,$(OBJDIR)/%.o,$(SRCS))
+SRCS:= ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s ft_strdup.s
+SRCS := $(addprefix $(SRCDIR)/, $(SRCS))
+OBJS:=$(patsubst $(SRCDIR)/%.s,$(OBJDIR)/%.o,$(SRCS))
 
-LIBRARY=libasm.a
+SRCS_BONUS:= ft_atoi_base_bonus.s
+SRCS_BONUS := $(addprefix $(SRCDIR)/, $(SRCS_BONUS)) # srcs/ft_atoi_base_bonus.s
+OBJS_BONUS:=$(patsubst $(SRCDIR)/%.s,$(OBJDIR)/%.o,$(SRCS_BONUS))
+#			srcs/%.s, srcs/%.o, [.s, .s, .s]
+
+NAME=libasm.a
 BINARY=mainc
 
-all: $(BINARY)
+all: $(BINARY) 
 
-lib: $(LIBRARY)
+$(BINARY) : $(NAME) main.c
+	$(CC) $(CFLAGS) main.c -L. -lasm -o $@
 
-test: all
-	$(MAKE) -C libasmTester/ $(filter-out test,$(MAKECMDGOALS))
-
-$(BINARY) : $(LIBRARY) main.c
-	$(CC) main.c -L. -lasm -o $@
-
-$(LIBRARY): $(OBJECTS)
+$(NAME): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.s libasm.h
 	@mkdir -p $(OBJDIR)
 	$(AS) $(ASFLAGS) $< -o $@
 
+bonus: $(NAME) $(OBJS_BONUS) 
+	$(AR) $(ARFLAGS) $(NAME) $(OBJS_BONUS)
+
+test: $(NAME) 
+	$(MAKE) -C libasmTester/ $(filter-out test,$(MAKECMDGOALS))
+
 clean:
 	rm -rf $(OBJDIR)
 
 fclean: clean
-	rm -f $(BINARY) $(LIBRARY)
+	rm -f $(BINARY) $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
-
-
+.PHONY: all clean fclean re bonus
