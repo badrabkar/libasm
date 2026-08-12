@@ -11,8 +11,8 @@ ft_strcmp:
         jnz	.sub
         test	al, al
         jz	.sub
-        inc     rdi
-        inc     rsi
+        inc rdi
+        inc rsi
         jmp	.loop
 .sub:
 ; movzx dx, dl
@@ -20,8 +20,8 @@ ft_strcmp:
 ; sub ax, al
 ; cwde
 
-        movzx   eax, al
-        movzx   edx, dl
-        sub     eax, edx
+        movzx eax, al
+        movzx edx, dl
+        sub eax, edx
         ret
 
